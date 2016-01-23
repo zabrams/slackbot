@@ -5,16 +5,17 @@ require 'json'
 post '/gateway' do
   message = params[:text].gsub(params[:trigger_word], '').strip
 
-  p params
-
-  action, repo = message.split('_').map {|c| c.strip.downcase }
-  repo_url = "https://api.github.com/repos/#{repo}"
-
-  case action
-    when 'issues'
-      resp = HTTParty.get(repo_url)
+  case message
+    when 'hacker-news'
+      resp = HTTParty.get("https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty")
       resp = JSON.parse resp.body
-      respond_message "There are #{resp['open_issues_count']} open issues on #{repo}"
+      resp = resp[0..9]
+      
+      story1 = resp[0]
+      story_url = "https://hacker-news.firebaseio.com/v0/item/#{story1}.json?print=pretty"
+      story_response = HTTParty.get(story_url)
+      story_response = JSON.parse story_response.body
+      respond_message "Title: #{story_response["title"]}, #{story_response["url"]}"
   end
 end
 
