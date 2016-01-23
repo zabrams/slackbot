@@ -11,6 +11,7 @@ post '/gateway' do
       resp = JSON.parse resp.body
       resp = resp[0..9]
       n = 0
+      respond_message = ""
       
       resp.each do |story_id|
         n += 1
