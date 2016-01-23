@@ -11,14 +11,14 @@ post '/gateway' do
       resp = JSON.parse resp.body
       resp = resp[0..9]
       n = 0
-      message = ""
+      message = "Here are the top 10 HN stories: \n"
       
       resp.each do |story_id|
         n += 1
         story_url = "https://hacker-news.firebaseio.com/v0/item/#{story_id}.json?print=pretty"
         story_response = HTTParty.get(story_url)
         story_response = JSON.parse story_response.body
-        message += "-- Story #{n}: #{story_response["title"]}, #{story_response["url"]} -- \n"
+        message += "Story #{n}: #{story_response["title"]}, #{story_response["url"]} \n"
       end
 
       respond_message message 
