@@ -4,8 +4,7 @@ require 'json'
 
 post '/gateway' do
   message = params[:text].gsub(params[:trigger_word], '').strip
-
-  puts message
+  message = message.split
 
   case message[0]
     when 'hacker-news'
