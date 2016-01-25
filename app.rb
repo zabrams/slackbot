@@ -5,7 +5,7 @@ require 'json'
 post '/gateway' do
   message = params[:text].gsub(params[:trigger_word], '').strip
 
-  case message
+  case message[0]
     when 'hacker-news'
       resp = HTTParty.get("https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty")
       resp = JSON.parse resp.body
@@ -20,6 +20,23 @@ post '/gateway' do
         story_response = JSON.parse story_response.body
         message += "Story #{n}: #{story_response["title"]}, #{story_response["url"]} \n"
       end
+    end
+
+    when 'stock'
+      resp = HTTParty.get('http://dev.markitondemand.com/Api/v2/Quote', :query => {:symbol => "#{message[1]}"})
+      resp = resp.parsed_response
+      if resp = resp["StockQuote"]
+        message = "#{resp["Name"]} \n
+          #{resp["Symbol"]} \n
+          #{resp["LastPrice"]} \n
+          #{resp["Change"]} \n
+          #{resp["MarketCap"]} \n
+          #{resp["Timestamp"]}
+          "
+      else 
+        message = "Couldn't find that ticket symbol :("
+      end
+    end
 
       respond_message message 
   end
