@@ -20,6 +20,7 @@ post '/gateway' do
         story_response = JSON.parse story_response.body
         message += "Story #{n}: #{story_response["title"]}, #{story_response["url"]} \n"
       end
+      respond_message message
 
     when 'stock'
       resp = HTTParty.get('http://dev.markitondemand.com/Api/v2/Quote', :query => {:symbol => "#{message[1]}"})
@@ -35,7 +36,10 @@ post '/gateway' do
       else 
         message = "Couldn't find that ticket symbol :("
       end
+      respond_message message 
 
+    else 
+      message = "I dont understand that :("
       respond_message message 
   end
 end
