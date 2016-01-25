@@ -6,6 +6,8 @@ post '/gateway' do
   message = params[:text].gsub(params[:trigger_word], '').strip
   message = message.split
 
+  puts message
+
   case message[0]
     when 'hacker-news'
       resp = HTTParty.get("https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty")
@@ -28,11 +30,11 @@ post '/gateway' do
       resp = resp.parsed_response
       if resp = resp["StockQuote"]
         message = "#{resp["Name"]} \n
-          #{resp["Symbol"]} \n
-          #{resp["LastPrice"]} \n
-          #{resp["Change"]} \n
-          #{resp["MarketCap"]} \n
-          #{resp["Timestamp"]}
+        #{resp["Symbol"]} \n
+        Price: #{resp["LastPrice"]} \n
+        Change: #{resp["Change"]} \n
+        Mkt Cap: #{resp["MarketCap"]} \n
+        Last Trade: #{resp["Timestamp"]}
           "
       else 
         message = "Couldn't find that ticket symbol :("
