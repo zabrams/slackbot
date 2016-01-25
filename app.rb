@@ -43,10 +43,10 @@ post '/gateway' do
       respond_message message 
 
     else 
-      message = "I dont understand that :("\
-                "I have the below commands:"\
-                "hacker-news - Get top 10 HN articles"\
-                "stock TICKER - Get latest stock price and change"\
+      message = "I dont understand that :(\n"+
+                "I have the below commands:\n"+
+                "hacker-news - Get top 10 HN articles\n"+
+                "stock TICKER - Get latest stock price and change\n"+
                 "-------------the end-------------"
 
       puts message
