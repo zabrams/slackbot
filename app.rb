@@ -29,13 +29,12 @@ post '/gateway' do
       resp = HTTParty.get('http://dev.markitondemand.com/Api/v2/Quote', :query => {:symbol => "#{message[1]}"})
       resp = resp.parsed_response
       if resp = resp["StockQuote"]
-        message = "#{resp["Name"]} \n
-        #{resp["Symbol"]} \n
-        Price: #{resp["LastPrice"]} \n
-        Change: #{resp["Change"]} \n
-        Mkt Cap: #{resp["MarketCap"]} \n
-        Last Trade: #{resp["Timestamp"]}
-          "
+        message = "\nCompany: #{resp["Name"]}\n
+        Ticker: #{resp["Symbol"]}\n
+        Price: $#{resp["LastPrice"]}\n
+        Change: #{resp["Change"]}\n
+        Mkt Cap: #{resp["MarketCap"]}\n
+        Last Trade: #{resp["Timestamp"]}"
       else 
         message = "Couldn't find that ticket symbol :("
       end
