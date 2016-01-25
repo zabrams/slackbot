@@ -23,6 +23,7 @@ post '/gateway' do
         story_response = JSON.parse story_response.body
         message += "Story #{n}: #{story_response["title"]}, #{story_response["url"]} \n"
       end
+      puts message
       respond_message message
 
     when 'stock'
@@ -38,6 +39,7 @@ post '/gateway' do
       else 
         message = "Couldn't find that ticket symbol :("
       end
+      puts message
       respond_message message 
 
     else 
@@ -46,6 +48,8 @@ post '/gateway' do
         hacker-news - Get top 10 HN articles \n
         stock TICKER - Get latest stock price and change \n
         THE END"
+
+      puts message
       respond_message message 
   end
 end
