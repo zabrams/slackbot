@@ -3,12 +3,12 @@ require 'httparty'
 require 'json'
 
 post '/gateway' do
-  message = params[:text].gsub(params[:trigger_word], '').strip
-  message = message.split
+  slack_response = params[:text].gsub(params[:trigger_word], '').strip
+  slack_response = slack_response.split
 
-  puts message
+  puts slack_response
 
-  case message[0]
+  case slack_response[0]
     when 'hacker-news'
       resp = HTTParty.get("https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty")
       resp = JSON.parse resp.body
@@ -27,7 +27,7 @@ post '/gateway' do
       respond_message message
 
     when 'stock'
-      resp = HTTParty.get('http://dev.markitondemand.com/Api/v2/Quote', :query => {:symbol => "#{message[1]}"})
+      resp = HTTParty.get('http://dev.markitondemand.com/Api/v2/Quote', :query => {:symbol => "#{slack_response[1]}"})
       resp = resp.parsed_response
       if resp = resp["StockQuote"]
         message = "Company: #{resp["Name"]}\n"+
@@ -40,10 +40,26 @@ post '/gateway' do
         message = "Couldn't find that ticket symbol :("
       end
       puts message
-      respond_message message 
+      respond_message message
+
+    #NYT top stories api
+    when 'nyt'
+      resp = HTTParty.get('http://api.nytimes.com/svc/topstories/v1/home.json?api-key=3e34bef4efc68cca88cb6b727c4beb6d:14:61565219')
+      resp = JSON.parse resp.body
+      resp = resp['results']
+      n = 0
+      message = "Here are the top stories from the NYT: \n"
+
+      resp.each do |story|
+        n += 1
+        message += "Story #{n}: #{story["title"]}, #{story["url"]} \n"
+      end
+
+      puts message
+      respond_message message
 
     else 
-      message = "I dont understand that :(\n"+
+      message = "I didn't understand that :(\n"+
                 "I have the below commands:\n"+
                 "hacker-news - Get top 10 HN articles\n"+
                 "stock TICKER - Get latest stock price and change\n"+
