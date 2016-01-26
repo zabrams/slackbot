@@ -19,6 +19,10 @@ post '/gateway' do
       message = Polls.create_poll(slack_response)
     else
       puts "OH NO THERE WAS AN ERROR"
+      message = "I accept the below commands: \n"+
+                "butler news [source] \n"+
+                "butler poll [option1] [option2] ... [option9] \n"+
+                "that's all i got .... for now."
   end
   puts message
   respond_message message 
