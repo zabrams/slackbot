@@ -23,9 +23,6 @@ post '/gateway' do
         story_response = JSON.parse story_response.body
         message += "Story #{n}: #{story_response["title"]}, #{story_response["url"]} \n"
       end
-      puts message
-      respond_message message
-
     when 'stock'
       resp = HTTParty.get('http://dev.markitondemand.com/Api/v2/Quote', :query => {:symbol => "#{slack_response[1]}"})
       resp = resp.parsed_response
@@ -39,8 +36,6 @@ post '/gateway' do
       else 
         message = "Couldn't find that ticket symbol :("
       end
-      puts message
-      respond_message message
 
     #NYT top stories api
     when 'nyt'
@@ -49,19 +44,7 @@ post '/gateway' do
       end
 
       resp = HTTParty.get("http://api.nytimes.com/svc/topstories/v1/#{slack_response[1]}.json?api-key=3e34bef4efc68cca88cb6b727c4beb6d:14:61565219")
-      if resp = JSON.parse resp.body
-        resp = resp['results']
-        n = 0
-        message = "Here are the top stories from the NYT: \n"
-
-        resp.each do |story|
-          n += 1
-          message += "Story #{n}: #{story["title"]}, #{story["url"]} \n"
-        end
-
-        puts message
-        respond_message message
-      else 
+      if resp.parsed_response.first[0] == "Error"
         message = "I support to below nyt commands: \n"+
                   "home\n"+
                   "world\n"+
@@ -80,18 +63,26 @@ post '/gateway' do
                   "travel\n"+
                   "magazine\n"+
                   "realestate"
-      end
+      else 
+        esp = JSON.parse resp.body
+        resp = resp['results']
+        n = 0
+        message = "Here are the top stories from the NYT: \n"
 
+        resp.each do |story|
+          n += 1
+          message += "Story #{n}: #{story["title"]}, #{story["url"]} \n"
+        end
+      end
     else 
       message = "I didn't understand that :(\n"+
                 "I have the below commands:\n"+
                 "hacker-news - Get top 10 HN articles\n"+
                 "stock TICKER - Get latest stock price and change\n"+
                 "-------------the end-------------"
-
-      puts message
-      respond_message message 
   end
+  puts message
+  respond_message message 
 end
 
 def respond_message message
