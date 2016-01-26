@@ -67,7 +67,7 @@ post '/gateway' do
         esp = JSON.parse resp.body
         resp = resp['results']
         n = 0
-        message = "Here are the top stories from the NYT: \n"
+        message = "Top stories from the NYT #{slack_response[1]}: \n"
 
         resp.each do |story|
           n += 1
