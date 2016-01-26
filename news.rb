@@ -1,7 +1,7 @@
 module News
 
 	def News.fetch_news(slack_response)
-		  case slack_response[0]
+		case slack_response[0]
 		    when 'hacker-news'
 		      resp = get_json("https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty")
 		      resp = resp[0..9]
@@ -76,12 +76,10 @@ module News
 		                "hacker-news - Get top 10 HN articles\n"+
 		                "stock TICKER - Get latest stock price and change\n"+
 		                "-------------the end-------------"
-		  end
+		end
 		puts message
   		return message
 	end
-
-	private
 
 	def get_json(url)
   		response = HTTParty.get(url)
