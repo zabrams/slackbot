@@ -5,18 +5,17 @@ require 'json'
 require_relative "news"
 
 post '/gateway' do
-  slack_command = params[:trigger_word].strip.downcase
   slack_response = params[:text].gsub(params[:trigger_word], '').strip.downcase
   slack_response = slack_response.split
+  req_type = slack_response.shift
 
-  puts "THIS IS THE NEW BRANCH"
+  puts req_type
   puts slack_response
-  puts slack_command
 
-  case slack_command
-    when 'news:'
+  case req_type
+    when 'news'
       message = News.fetch_news(slack_response)
-    when 'poll:'
+    when 'poll'
       message = ":one:"
     else
       puts "OH NO THERE WAS AN ERROR"
