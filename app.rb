@@ -3,7 +3,7 @@ require 'httparty'
 require 'json'
 
 post '/gateway' do
-  slack_response = params[:text].gsub(params[:trigger_word], '').strip
+  slack_response = params[:text].gsub(params[:trigger_word], '').strip.downcase
   slack_response = slack_response.split
 
   puts slack_response
