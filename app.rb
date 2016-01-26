@@ -1,8 +1,8 @@
 require 'sinatra'
 require 'httparty'
 require 'json'
-
 require_relative "news"
+require_relative "polls"
 
 post '/gateway' do
   slack_response = params[:text].gsub(params[:trigger_word], '').strip.downcase
@@ -16,7 +16,7 @@ post '/gateway' do
     when 'news'
       message = News.fetch_news(slack_response)
     when 'poll'
-      message = ":one:"
+      message = Polls.create_poll(slack_response)
     else
       puts "OH NO THERE WAS AN ERROR"
   end
