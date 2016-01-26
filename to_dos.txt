@@ -1,14 +1,29 @@
 Next Steps
 
+refactor code - its very sloppy
+
+-- Allow news_but to handle more commands -- 
+
+Bot to organize an event
+
+Create polls like Simple Poll
+
+Find a coffee shop 
+
+-- Allow news_but to proactively send info -- 
+
+Send weather updates
+
+Send a quote of the day
+
+-- Allow newsbot to collect and recall information -- 
+
 Get the bot to send me reminders
 
 Get the bot to keep a to-do list for me
 
-Bot to organize an event
-
 Add a database to save responses
 Figure out how to parse text to match queries to database responses
 Figure out how to train the bot to get better
-
 
 Can I connect the bot to RemindBot? 

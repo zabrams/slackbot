@@ -13,11 +13,9 @@ post '/gateway' do
       resp = HTTParty.get("https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty")
       resp = JSON.parse resp.body
       resp = resp[0..9]
-      n = 0
       message = "Here are the top 10 HN stories: \n"
       
       resp.each do |story_id|
-        n += 1
         story_url = "https://hacker-news.firebaseio.com/v0/item/#{story_id}.json?print=pretty"
         story_response = HTTParty.get(story_url)
         story_response = JSON.parse story_response.body
@@ -47,11 +45,9 @@ post '/gateway' do
         resp = HTTParty.get("http://api.nytimes.com/svc/mostpopular/v2/mostviewed/all-sections/1.json?api-key=77c81381526472f019114e6da8e2a40f:14:61565219")
         resp = JSON.parse resp.body
         resp = resp['results']
-        n = 0
         message = "Most popular stories from the NYT: \n"
 
         resp.each do |story|
-          n += 1
           message += "*#{story["title"]}*, #{story["url"]} \n"
         end
       else  
@@ -79,11 +75,9 @@ post '/gateway' do
         else 
           resp = JSON.parse resp.body
           resp = resp['results']
-          n = 0
           message = "Top stories from the NYT #{slack_response[1]}: \n"
 
           resp.each do |story|
-            n += 1
             message += "*#{story["title"]}*, #{story["url"]} \n"
           end
         end
