@@ -17,7 +17,7 @@ post '/gateway' do
       resp.each do |story_id|
         story_url = "https://hacker-news.firebaseio.com/v0/item/#{story_id}.json?print=pretty"
         story_response = get_json(story_url)
-        message += "*#{story_response["title"]}*, #{story_response["url"]} \n"
+        message += create_headlines(story_response)
       end
     when 'stock'
       resp = HTTParty.get('http://dev.markitondemand.com/Api/v2/Quote', :query => {:symbol => "#{slack_response[1]}"})
@@ -45,7 +45,7 @@ post '/gateway' do
         message = "Most popular stories from the NYT: \n"
 
         resp.each do |story|
-          message += "*#{story["title"]}*, #{story["url"]} \n"
+          message += create_headlines(story)
         end
       else  
         if resp = get_json("http://api.nytimes.com/svc/topstories/v1/#{slack_response[1]}.json?api-key=3e34bef4efc68cca88cb6b727c4beb6d:14:61565219") 
@@ -53,7 +53,7 @@ post '/gateway' do
           message = "Top stories from the NYT #{slack_response[1]}: \n"
 
           resp.each do |story|
-            message += "*#{story["title"]}*, #{story["url"]} \n"
+            message += create_headlines(story)
           end
         else
           message = "I support to below nyt commands: \n"+
@@ -101,4 +101,8 @@ def get_json(url)
     response = JSON.parse(response.body)
     return response
   end
+end
+
+def create_headlines(hash)
+  message = "*#{hash["title"]}*, #{hash["url"]} \n"
 end
