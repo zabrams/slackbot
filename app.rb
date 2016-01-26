@@ -16,6 +16,8 @@ post '/gateway' do
   case slack_command
     when 'news:'
       message = News.fetch_news(slack_response)
+    when 'poll:'
+      message = ":one:"
     else
       puts "OH NO THERE WAS AN ERROR"
   end
