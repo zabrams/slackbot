@@ -48,7 +48,6 @@ post '/gateway' do
           message += "*#{story["title"]}*, #{story["url"]} \n"
         end
       else  
-        resp = HTTParty.get()
         if resp = get_json("http://api.nytimes.com/svc/topstories/v1/#{slack_response[1]}.json?api-key=3e34bef4efc68cca88cb6b727c4beb6d:14:61565219") 
           resp = resp['results']
           message = "Top stories from the NYT #{slack_response[1]}: \n"
