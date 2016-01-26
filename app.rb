@@ -21,7 +21,7 @@ post '/gateway' do
         story_url = "https://hacker-news.firebaseio.com/v0/item/#{story_id}.json?print=pretty"
         story_response = HTTParty.get(story_url)
         story_response = JSON.parse story_response.body
-        message += "Story #{n}: #{story_response["title"]}, #{story_response["url"]} \n"
+        message += "*#{story_response["title"]}*, #{story_response["url"]} \n"
       end
     when 'stock'
       resp = HTTParty.get('http://dev.markitondemand.com/Api/v2/Quote', :query => {:symbol => "#{slack_response[1]}"})
@@ -71,7 +71,7 @@ post '/gateway' do
 
         resp.each do |story|
           n += 1
-          message += "Story #{n}: #{story["title"]}, #{story["url"]} \n"
+          message += "*#{story["title"]}*, #{story["url"]} \n"
         end
       end
     else 
