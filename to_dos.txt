@@ -1,7 +1,5 @@
 Next Steps
 
-refactor code - its very sloppy
-
 -- Allow news_but to handle more commands -- 
 
 Bot to organize an event
