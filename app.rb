@@ -43,35 +43,49 @@ post '/gateway' do
         slack_response[1] = "home"
       end
 
-      resp = HTTParty.get("http://api.nytimes.com/svc/topstories/v1/#{slack_response[1]}.json?api-key=3e34bef4efc68cca88cb6b727c4beb6d:14:61565219")
-      if resp.parsed_response.first[0] == "Error"
-        message = "I support to below nyt commands: \n"+
-                  "home\n"+
-                  "world\n"+
-                  "national\n"+
-                  "politics\n"+
-                  "nyregion\n"+
-                  "business\n"+
-                  "opinion\n"+
-                  "technology\n"+
-                  "science\n"+
-                  "health\n"+
-                  "sports\n"+
-                  "arts\n"+
-                  "fashion\n"+
-                  "dining\n"+
-                  "travel\n"+
-                  "magazine\n"+
-                  "realestate"
-      else 
-        esp = JSON.parse resp.body
+      if slack_response[1] == "popular"
+        resp = HTTParty.get("http://api.nytimes.com/svc/mostpopular/v2/mostviewed/all-sections/1.json?api-key=77c81381526472f019114e6da8e2a40f:14:61565219")
+        resp = JSON.parse resp.body
         resp = resp['results']
         n = 0
-        message = "Top stories from the NYT #{slack_response[1]}: \n"
+        message = "Most popular stories from the NYT: \n"
 
         resp.each do |story|
           n += 1
           message += "*#{story["title"]}*, #{story["url"]} \n"
+        end
+      else  
+        resp = HTTParty.get("http://api.nytimes.com/svc/topstories/v1/#{slack_response[1]}.json?api-key=3e34bef4efc68cca88cb6b727c4beb6d:14:61565219")
+        if resp.parsed_response.first[0] == "Error"
+          message = "I support to below nyt commands: \n"+
+                    "popular\n"+
+                    "home\n"+
+                    "world\n"+
+                    "national\n"+
+                    "politics\n"+
+                    "nyregion\n"+
+                    "business\n"+
+                    "opinion\n"+
+                    "technology\n"+
+                    "science\n"+
+                    "health\n"+
+                    "sports\n"+
+                    "arts\n"+
+                    "fashion\n"+
+                    "dining\n"+
+                    "travel\n"+
+                    "magazine\n"+
+                    "realestate"
+        else 
+          resp = JSON.parse resp.body
+          resp = resp['results']
+          n = 0
+          message = "Top stories from the NYT #{slack_response[1]}: \n"
+
+          resp.each do |story|
+            n += 1
+            message += "*#{story["title"]}*, #{story["url"]} \n"
+          end
         end
       end
     else 

@@ -1,7 +1,5 @@
 Next Steps
 
-Hook up NYT and other news outlets
-
 Get the bot to send me reminders
 
 Get the bot to keep a to-do list for me
