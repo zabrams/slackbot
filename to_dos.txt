@@ -5,6 +5,8 @@ refactor code - its very sloppy
 -- Allow news_but to handle more commands -- 
 
 Bot to organize an event
+-what days work "this week", "next week", "weekend in [march]"
+-creates poll with available days
 
 Create polls like Simple Poll
 

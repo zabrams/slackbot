@@ -10,15 +10,13 @@ post '/gateway' do
 
   case slack_response[0]
     when 'hacker-news'
-      resp = HTTParty.get("https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty")
-      resp = JSON.parse resp.body
+      resp = get_json("https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty")
       resp = resp[0..9]
       message = "Here are the top 10 HN stories: \n"
       
       resp.each do |story_id|
         story_url = "https://hacker-news.firebaseio.com/v0/item/#{story_id}.json?print=pretty"
-        story_response = HTTParty.get(story_url)
-        story_response = JSON.parse story_response.body
+        story_response = get_json(story_url)
         message += "*#{story_response["title"]}*, #{story_response["url"]} \n"
       end
     when 'stock'
@@ -32,7 +30,7 @@ post '/gateway' do
         "Mkt Cap: #{resp["MarketCap"]}\n"+
         "Last Trade: #{resp["Timestamp"]}"
       else 
-        message = "Couldn't find that ticket symbol :("
+        message = "Couldn't find that ticker :("
       end
 
     #NYT top stories api
@@ -42,8 +40,7 @@ post '/gateway' do
       end
 
       if slack_response[1] == "popular"
-        resp = HTTParty.get("http://api.nytimes.com/svc/mostpopular/v2/mostviewed/all-sections/1.json?api-key=77c81381526472f019114e6da8e2a40f:14:61565219")
-        resp = JSON.parse resp.body
+        resp = get_json("http://api.nytimes.com/svc/mostpopular/v2/mostviewed/all-sections/1.json?api-key=77c81381526472f019114e6da8e2a40f:14:61565219")
         resp = resp['results']
         message = "Most popular stories from the NYT: \n"
 
@@ -51,8 +48,15 @@ post '/gateway' do
           message += "*#{story["title"]}*, #{story["url"]} \n"
         end
       else  
-        resp = HTTParty.get("http://api.nytimes.com/svc/topstories/v1/#{slack_response[1]}.json?api-key=3e34bef4efc68cca88cb6b727c4beb6d:14:61565219")
-        if resp.parsed_response.first[0] == "Error"
+        resp = HTTParty.get()
+        if resp = get_json("http://api.nytimes.com/svc/topstories/v1/#{slack_response[1]}.json?api-key=3e34bef4efc68cca88cb6b727c4beb6d:14:61565219") 
+          resp = resp['results']
+          message = "Top stories from the NYT #{slack_response[1]}: \n"
+
+          resp.each do |story|
+            message += "*#{story["title"]}*, #{story["url"]} \n"
+          end
+        else
           message = "I support to below nyt commands: \n"+
                     "popular\n"+
                     "home\n"+
@@ -72,14 +76,6 @@ post '/gateway' do
                     "travel\n"+
                     "magazine\n"+
                     "realestate"
-        else 
-          resp = JSON.parse resp.body
-          resp = resp['results']
-          message = "Top stories from the NYT #{slack_response[1]}: \n"
-
-          resp.each do |story|
-            message += "*#{story["title"]}*, #{story["url"]} \n"
-          end
         end
       end
     else 
@@ -96,4 +92,14 @@ end
 def respond_message message
   content_type :json
   {:text => message}.to_json
+end
+
+def get_json(url)
+  response = HTTParty.get(url)
+  if response.parsed_response.first[0] == "Error"
+    return false
+  else
+    response = JSON.parse(response.body)
+    return response
+  end
 end
