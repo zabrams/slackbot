@@ -74,7 +74,8 @@ module News
 		      message = "I didn't understand that :(\n"+
 		                "I have the below commands:\n"+
 		                "hacker-news - Get top 10 HN articles\n"+
-		                "stock TICKER - Get latest stock price and change\n"+
+		                "stock [ticker] - Get latest stock price and change\n"+
+		                "nyt [section] - Get top 10 HN articles\n"+
 		                "-------------the end-------------"
 		end
 		puts message
