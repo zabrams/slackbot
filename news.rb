@@ -1,6 +1,6 @@
 module News
 
-	def fetch_news(slack_response)
+	def News.fetch_news(slack_response)
 		  case slack_response[0]
 		    when 'hacker-news'
 		      resp = get_json("https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty")
