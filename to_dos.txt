@@ -1,12 +1,12 @@
 Next Steps
 
+Break out stocks into its own command
+
 -- Allow news_but to handle more commands -- 
 
 Bot to organize an event
 -what days work "this week", "next week", "weekend in [march]"
 -creates poll with available days
-
-Create polls like Simple Poll
 
 Find a coffee shop 
 
@@ -27,3 +27,5 @@ Figure out how to parse text to match queries to database responses
 Figure out how to train the bot to get better
 
 Can I connect the bot to RemindBot? 
+
+
