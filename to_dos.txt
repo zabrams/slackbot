@@ -1,5 +1,14 @@
 Next Steps
 
+Figure out how to push with Postgres integrate to Heroku
+Begin saving token information from google calendar
+
+
+
+
+
+
+
 Break out stocks into its own command
 
 -- Allow news_but to handle more commands -- 

@@ -6,7 +6,7 @@ require_relative "news"
 require_relative "polls"
 require_relative "cal"
 
-db = URI.parse('postgres://zach@localhost/cal_users')
+db = URI.parse('postgres://kaxjttbjtsdvpb:f-CWBQHdi0DGS-KJwak7kbPwS5@ec2-54-225-197-143.compute-1.amazonaws.com:5432/d464ch0dradbq5')
 
 ActiveRecord::Base.establish_connection(
   :adapter  => db.scheme == 'postgres' ? 'postgresql' : db.scheme,
