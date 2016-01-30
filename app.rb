@@ -5,6 +5,7 @@ require 'sinatra/activerecord'
 require_relative "news"
 require_relative "polls"
 require_relative "cal"
+require_relative "gmail"
 
 db = URI.parse('postgres://kaxjttbjtsdvpb:f-CWBQHdi0DGS-KJwak7kbPwS5@ec2-54-225-197-143.compute-1.amazonaws.com:5432/d464ch0dradbq5')
 
@@ -36,7 +37,7 @@ post '/gateway' do
         #check is cal request is valid
         message = "yay, you're a user"
       else
-        message = Cal_users.auth_user(user_id)
+        message = Gmail.auth_user
       end
     else
       puts "OH NO THERE WAS AN ERROR"
