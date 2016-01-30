@@ -32,11 +32,11 @@ post '/gateway' do
     when 'poll'
       message = Polls.create_poll(slack_response)
     when 'cal'
-      if user = Cal_user.find_by(user_id: user_id)
+      if user = Cal_users.find_by(user_id: user_id)
         #check is cal request is valid
         message = "yay, you're a user"
       else
-        message = auth_user(user_id)
+        message = Cal_users.auth_user(user_id)
       end
     else
       puts "OH NO THERE WAS AN ERROR"
