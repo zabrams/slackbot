@@ -6,7 +6,7 @@ class Gmail
 			:scope => 'https://www.googleapis.com/auth/calendar'})
 		resp = JSON.parse(resp.body)
 		message = "Visit this url: #{resp['verification_url']} \n"+
-				"Enter this code: #{resp['user-code']}"
+				"Enter this code: #{resp['user_code']}"
 		return message
 	end
 end
