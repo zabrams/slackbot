@@ -37,7 +37,7 @@ post '/gateway' do
         #check is cal request is valid
         message = "yay, you're a user"
       else
-        if slack_response == "finished"
+        if slack_response.first == "finished"
           message = 'great!'
         else
           message = Gmail.auth_user
