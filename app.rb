@@ -18,7 +18,7 @@ ActiveRecord::Base.establish_connection(
 )
 
 post '/gateway' do
-  user_name = params[:user_name].downcase
+  user_id = params[:user_id]
   slack_response = params[:text].gsub(params[:trigger_word], '').strip.downcase
   slack_response = slack_response.split
   req_type = slack_response.shift
@@ -32,7 +32,12 @@ post '/gateway' do
     when 'poll'
       message = Polls.create_poll(slack_response)
     when 'cal'
-      message = Cal.check_status(user_name)
+      if user = Cal_user.find_by(user_id: user_id)
+        #check is cal request is valid
+        message = "yay, you're a user"
+      else
+        message = auth_user(user_id)
+      end
     else
       puts "OH NO THERE WAS AN ERROR"
       message = "I accept the below commands: \n"+

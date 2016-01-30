@@ -1,6 +1,5 @@
 Next Steps
 
-Figure out how to push with Postgres integrate to Heroku
 Begin saving token information from google calendar
 
 

@@ -4,10 +4,15 @@
 
 #if no 
 class Cal_users < ActiveRecord::Base
-	def check_status(name)
-		#look in db for user name
+	def auth_user(user_id)
+		resp = HTTParty.post("https://accounts.google.com/o/oauth2/device/code", 
+			:query => {:client_id=>'530054264762-oquhikmnri528k9nmr5ucqk1shgiahnq.apps.googleusercontent.com', 
+			:scope => 'https://www.googleapis.com/auth/calendar'})
+		resp = JSON.parse(resp.body)
+		message = "Visit this url: #{resp['verification_url']} \n"+
+				"Enter this code: #{resp['user-code']}"
+		return message
 	end
-
 end
 
 
@@ -16,16 +21,14 @@ end
 #Do the below to connect all the accounts
 
 #initial call to google to get access, it returns the utl 
-#resp = HTTParty.post("https://accounts.google.com/o/oauth2/device/code", 
-#	:query => {:client_id=>'530054264762-oquhikmnri528k9nmr5ucqk1shgiahnq.apps.googleusercontent.com', 
-#		:scope => 'email profile'})
+
 
 #then -- 
 
-#resp = JSON.parse(resp.body)
+
  
 #this is the output - show the code and url 
- #output ===> {"device_code"=>"YGQM-VAPC4/_z8ez6M-FrwF467maYCFcwoczOmggRSECMLTDoRph_I", 
+#output ===> {"device_code"=>"YGQM-VAPC4/_z8ez6M-FrwF467maYCFcwoczOmggRSECMLTDoRph_I", 
 # 	"user_code"=>"YGQM-VAPC", "verification_url"=>"https://www.google.com/device", 
 # 	"expires_in"=>1800, "interval"=>5} 
  #Show code and url to user. this is how they auth
@@ -39,6 +42,8 @@ end
 #		:code => "YGQM-VAPC4/_z8ez6M-FrwF467maYCFcwoczOmggRSECMLTDoRph_I", 
 #		:grant_type => "http://oauth.net/grant_type/device/1.0", 
 #		:client_secret => 'QIUx2_-swnRBS15GBjMwVAzg'})
+# MAKE SURE TO PUT CLIENT SECRET IN NEW FILE THAT OTHERS CANNOT ACCESS
+
 
 #This sends back the access_token, refresh_token, and expiry time
 #I should save this info to a DB
