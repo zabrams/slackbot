@@ -1,5 +1,9 @@
 Next Steps
 
+Connect to postgres heroku - change user_name to user_id and convert to text type
+
+figure out why need to add Gmail.asda to class
+
 Begin saving token information from google calendar
 
 

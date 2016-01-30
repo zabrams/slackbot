@@ -11,13 +11,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160129005547) do
+ActiveRecord::Schema.define(version: 20160130170656) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "cal_users", force: :cascade do |t|
-    t.string   "user_name"
+    t.text     "user_id"
     t.text     "access_token"
     t.text     "refresh_token"
     t.datetime "expires_at"
