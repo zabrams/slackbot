@@ -38,7 +38,7 @@ post '/gateway' do
         message = "yay, you're a user"
       else
         if slack_response.first == "finished"
-          message = 'great!'
+          message = Gmail.add_user(user_id)
         else
           message = Gmail.auth_user
         end
